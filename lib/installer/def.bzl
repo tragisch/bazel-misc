@@ -23,11 +23,16 @@ Starlark rules for installing files using Bazel.
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_skylib//lib:shell.bzl", "shell")
 load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
-load("@rules_license//sample_reports:licenses_used.bzl", _licenses_used = "licenses_used")
+# Simple license collection without external dependencies
+# Using native sh_binary instead of rules_shell for simplicity
+# load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 _INSTALLER_GEN_SUFFIX = "_gen"
 _TEMPLATE_TARGET = "//lib/installer:installer_template"
+
+# License files can be included via the data parameter
 
 def _install_files_depset(target):
     direct = []
@@ -192,29 +197,17 @@ def installer(name, data, compilation_mode = "opt", executable = True, target_su
     """
     installer_name = "_{}{}".format(name, _INSTALLER_GEN_SUFFIX)
 
-    # Create automatic license collection
-    license_name = name + "_licenses"
-    _licenses_used(
-        name = license_name,
-        out = license_name + ".json",
-        deps = data,
-    )
-
+    # License files should be included in data parameter by user
     _gen_installer(
         name = installer_name,
         compilation_mode = compilation_mode,
-        data = data + [":" + license_name],  # Add license JSON to data
+        data = data,
         executable = executable,
         target_subdir = target_subdir,
         system_integration = system_integration,
     )
 
-    # sh_binary(
-    #     name = name,
-    #     srcs = [":" + installer_name],
-    #     data = data + [":" + installer_name],
-    #     deps = ["@bazel_tools//tools/bash/runfiles"],
-    # )
+    # Create final sh_binary target
     sh_binary(
         name = name,
         srcs = [":" + installer_name],

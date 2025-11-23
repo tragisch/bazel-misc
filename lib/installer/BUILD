@@ -20,7 +20,10 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 licenses(["notice"])  # Apache 2.0
 
 exports_files(
-    ["def.bzl"],
+    [
+        "def.bzl",
+        "README.md",
+    ],
     visibility = ["//visibility:public"],
 )
 

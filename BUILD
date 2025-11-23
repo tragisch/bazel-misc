@@ -6,7 +6,10 @@
 package(default_visibility = ["//visibility:public"])
 
 # Export key library components for external consumption
-exports_files(["MODULE.bazel"])
+exports_files([
+    "MODULE.bazel",
+    "LICENSE",
+])
 
 # Create convenient aliases for external users
 alias(
@@ -30,7 +33,10 @@ alias(
 # Filegroup for documentation
 filegroup(
     name = "docs",
-    srcs = glob(["doc/**"]) + [
+    srcs = glob(
+        ["doc/**"],
+        allow_empty = True,
+    ) + [
         "README.md",
         "//lib/installer:README.md",
         "//lib/license:README.md",

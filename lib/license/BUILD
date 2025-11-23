@@ -27,6 +27,7 @@ exports_files([
     "license_report.bzl",
     "license_summary_generator.py",
     "sbom_generator.py",
+    "README.md",
 ])
 
 # Make Python scripts executable as tools
