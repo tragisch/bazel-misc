@@ -14,20 +14,6 @@ Comprehensive license reporting and SBOM generation tools with API compatibility
 
 - Bazel 8.0+ (uses bzlmod)
 
-## Usage in External Projects
-
-Add to your `MODULE.bazel`:
-```starlark
-bazel_dep(name = "bazel_misc", version = "0.0.1")
-
-# For development/local testing:
-git_override(
-    module_name = "bazel_misc",
-    remote = "https://github.com/tragisch/bazel-misc.git",
-    commit = "<latest-commit-hash>",
-)
-```
-
 ## Examples
 
 ### Using Installer Rules
